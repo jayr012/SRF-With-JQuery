@@ -2,15 +2,15 @@ $(document).ready(function() {
 
     // --- LETTER-ONLY FIELDS ---
     const letterFields = [
-        {id: '#firstName', name: 'First Name'},
-        {id: '#lastName', name: 'Last Name'},
-        {id: '#middleInitial', name: 'Middle Initial'}
+        {id: '#firstName', name: 'First Name', pattern: /^[A-Za-zÀ-ÖØ-öø-ÿ'-]+$/}, // allow letters, hyphens, apostrophes
+        {id: '#lastName', name: 'Last Name', pattern: /^[A-Za-z]+$/}, // letters only
+        {id: '#middleInitial', name: 'Middle Initial', pattern: /^[A-Za-z]+$/} // letters only
     ];
 
     letterFields.forEach(field => {
         $(field.id).on('input', function() {
             const val = $(this).val().trim();
-            if (val !== '' && /^[A-Za-z]+$/.test(val)) {
+            if (val !== '' && field.pattern.test(val)) {
                 setSuccess($(this));
             } else {
                 removeError($(this));
@@ -19,8 +19,11 @@ $(document).ready(function() {
             const val = $(this).val().trim();
             if (val === '') {
                 setError($(this), `Enter your ${field.name} is required`);
-            } else if (!/^[A-Za-z]+$/.test(val)) {
-                setError($(this), `${field.name} must contain letters only`);
+            } else if (!field.pattern.test(val)) {
+                const msg = field.id === '#firstName'
+                    ? `${field.name} must contain letters, hyphens, or apostrophes only`
+                    : `${field.name} must contain letters only`;
+                setError($(this), msg);
             } else {
                 setSuccess($(this));
             }
@@ -123,6 +126,8 @@ $(document).ready(function() {
 
     // --- FORM SUBMISSION ---
     $('form').on('submit', function(e) {
+        e.preventDefault(); // Prevent actual form submission/reload
+
         // Trigger validation on all fields
         letterFields.forEach(f => $(f.id).trigger('blur'));
         numberFields.forEach(f => $(f.id).trigger('blur'));
@@ -130,12 +135,21 @@ $(document).ready(function() {
         $('#dob').trigger('blur');
         $('#terms').trigger('change');
 
+        // Check if any errors exist
         if ($('.form-group .error').length > 0 || !$('#terms').is(':checked')) {
-            e.preventDefault();
+            // Optionally, shake the submit button or alert
             alert('Please fix all errors before submitting.');
-        } else {
-            $('#successMessage').html('<i class="fas fa-check-circle"></i> Registration Successful!').addClass('show');
+            return;
         }
+
+        // Show success message
+        $('#successMessage')
+            .html('<i class="fas fa-check-circle"></i> Registration submitted successfully! You will receive a confirmation email shortly.')
+            .addClass('show');
+
+        // Optionally, reset form after success
+        $(this)[0].reset();
+        $('input, select').removeClass('success');
     });
 
 });
