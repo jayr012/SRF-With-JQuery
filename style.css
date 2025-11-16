@@ -1,4 +1,4 @@
-/* Reset */
+/* --- RESET --- */
 * {
     margin: 0;
     padding: 0;
@@ -6,20 +6,18 @@
 }
 
 body {
-    /* Background image instead of gradient */
     background: url('https://i.pinimg.com/1200x/cf/05/31/cf0531b6c53e2fc6c33819808ac568be.jpg') no-repeat center center fixed;
     background-size: cover;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* allow scrolling */
+    align-items: flex-start;
     min-height: 100vh;
     padding: 40px 20px;
     font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
     position: relative;
-    overflow-x: hidden; /* prevent horizontal scroll */
 }
 
-/* Optional wave overlay can be removed or kept for effect */
 body::after {
     content: '';
     position: absolute;
@@ -33,30 +31,24 @@ body::after {
     animation: waveMove 20s linear infinite;
 }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 @keyframes waveMove {
     0% { transform: translateX(-25%) rotate(-5deg); }
     50% { transform: translateX(-20%) rotate(0deg); }
     100% { transform: translateX(-25%) rotate(-5deg); }
 }
 
-/* Form Container with blur */
+/* --- FORM CONTAINER --- */
 .form-container {
-    background: rgba(255,255,255,0.5); /* more transparent to let background show */
-    backdrop-filter: blur(0.25px); /* blur effect */
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(0.25px);
     padding: 35px 45px;
     border-radius: 25px;
     box-shadow: 0 25px 50px rgba(0,0,0,0.2);
     width: 100%;
     max-width: 650px;
+    margin: 20px auto;
     position: relative;
     z-index: 1;
-    margin: 20px auto;
     transition: transform 0.3s ease;
 }
 
@@ -64,7 +56,7 @@ body::after {
     transform: translateY(-5px);
 }
 
-/* Headers */
+/* --- FORM HEADER --- */
 .form-header {
     text-align: center;
     margin-bottom: 30px;
@@ -77,19 +69,18 @@ body::after {
     margin-bottom: 10px;
 }
 
-.form-subtitle {
-    font-size: 1rem;
-    color: #222;
-    margin-top: 5px;
-}
-
 h2 {
     color: #111;
     margin-bottom: 10px;
     font-weight: 600;
 }
 
-/* Fieldset */
+.form-subtitle {
+    font-size: 1rem;
+    color: #222;
+}
+
+/* --- FIELDSET --- */
 fieldset {
     border: 2px solid #66a6ff;
     border-radius: 15px;
@@ -109,7 +100,7 @@ legend {
     color: #0662ff;
 }
 
-/* Form inputs */
+/* --- FORM GROUP --- */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -121,7 +112,6 @@ legend {
     margin-bottom: 6px;
     font-weight: 500;
     color: #111;
-    font-family: 'Poppins', sans-serif;
 }
 
 .form-group label i {
@@ -136,8 +126,8 @@ legend {
     border-radius: 12px;
     outline: none;
     font-size: 1rem;
-    font-family: 'Roboto', sans-serif;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .form-group input:focus,
@@ -146,7 +136,7 @@ legend {
     box-shadow: 0 0 10px rgba(102, 166, 255, 0.35);
 }
 
-/* Terms checkbox */
+/* --- TERMS --- */
 .form-terms {
     display: flex;
     align-items: center;
@@ -159,7 +149,7 @@ legend {
     accent-color: #66a6ff;
 }
 
-/* Submit button */
+/* --- SUBMIT BUTTON --- */
 .submit-btn {
     width: 100%;
     padding: 15px;
@@ -170,7 +160,6 @@ legend {
     border-radius: 15px;
     cursor: pointer;
     font-weight: 600;
-    font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
 }
 
@@ -180,17 +169,77 @@ legend {
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
-/* Responsive */
-@media (max-width: 550px) {
-    .form-container {
-        padding: 25px;
-    }
-    .student-icon {
-        font-size: 45px;
-    }
+/* --- SUCCESS MESSAGE --- */
+.success-message {
+    margin-top: 15px;
+    padding: 15px 20px;
+    background: rgba(220, 220, 220, 0.85);
+    backdrop-filter: blur(6px);
+    border-radius: 15px;
+    color: #333;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease, transform 0.4s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Modal Styles */
+.success-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.success-message i {
+    color: #28a745;
+    font-size: 1.2rem;
+}
+
+/* --- ERROR STATES --- */
+input.success, select.success {
+    border-color: #28a745 !important;
+    background-color: #e6f7e6;
+}
+
+input.error, select.error {
+    border-color: #dc3545 !important;
+    background-color: #f8d7da;
+}
+
+.error-msg {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+/* Shake animation */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.3s;
+  border-color: #e74c3c;
+}
+
+/* --- FOOTER --- */
+.form-footer {
+    text-align: center;
+    font-size: 0.90rem;
+    color: #555;
+    margin-top: 25px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- MODAL --- */
 .modal {
     display: none;
     position: fixed;
@@ -263,80 +312,67 @@ legend {
     to {opacity: 1; transform: translateY(0);}
 }
 
-/* Success message */
-.success-message {
-    margin-top: 15px;
-    padding: 15px 20px;
-    background: rgba(220, 220, 220, 0.85);
-    backdrop-filter: blur(6px);
-    border-radius: 15px;
-    color: #333;
-    font-weight: 500;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.5s ease, transform 0.4s ease;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+/* --- RESPONSIVE --- */
+@media (max-width: 650px) {
+    .form-container {
+        padding: 20px 20px;
+        border-radius: 20px;
+    }
+
+    fieldset {
+        padding: 20px 15px;
+        font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group select {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .student-icon {
+        font-size: 45px;
+    }
+
+    .submit-btn {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    .error-msg {
+        font-size: 0.8rem;
+    }
 }
 
-.success-message.show {
-    opacity: 1;
-    transform: translateY(0);
-}
+@media (max-width: 400px) {
+    .form-container {
+        padding: 15px 15px;
+    }
 
-.success-message i {
-    color: #28a745;
-    font-size: 1.2rem;
-}
+    .form-group label {
+        font-size: 0.85rem;
+    }
 
-/* Form footer and copyright */
-.form-footer {
-    text-align: center;
-    font-size: 0.90rem;
-    color: #555;
-    margin-top: 25px;
-    font-family: 'Poppins', sans-serif;
-}
+    .form-group input,
+    .form-group select {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
 
-.form-footer::after {
-    display: block;
-    margin-top: 5px;
-    font-size: 0.85rem;
-    color: #888;
-}
+    fieldset {
+        padding: 15px 10px;
+    }
 
-input.success, select.success {
-    border-color: #28a745 !important; /* green */
-    background-color: #e6f7e6;
-}
-
-input.error, select.error {
-    border-color: #dc3545 !important; /* red */
-    background-color: #f8d7da;
-}
-
-.error-msg {
-    color: #dc3545;
-    font-size: 0.85rem;
-    margin-top: 4px;
-    display: block;
-}
-
-/* Shake animation */
-@keyframes shake {
-  0% { transform: translateX(0); }
-  20% { transform: translateX(-5px); }
-  40% { transform: translateX(5px); }
-  60% { transform: translateX(-5px); }
-  80% { transform: translateX(5px); }
-  100% { transform: translateX(0); }
-}
-
-.shake {
-  animation: shake 0.3s;
-  border-color: #e74c3c; /* red border on shake */
+    .submit-btn {
+        font-size: 0.95rem;
+        padding: 10px;
+    }
 }
