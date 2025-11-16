@@ -10,6 +10,13 @@ $(document).ready(function() {
     letterFields.forEach(field => {
         $(field.id).on('input', function() {
             const val = $(this).val().trim();
+            if (val !== '' && /^[A-Za-z]+$/.test(val)) {
+                setSuccess($(this));
+            } else {
+                removeError($(this));
+            }
+        }).on('blur', function() {
+            const val = $(this).val().trim();
             if (val === '') {
                 setError($(this), `Enter your ${field.name} is required`);
             } else if (!/^[A-Za-z]+$/.test(val)) {
@@ -28,6 +35,13 @@ $(document).ready(function() {
 
     numberFields.forEach(field => {
         $(field.id).on('input', function() {
+            const val = $(this).val().trim();
+            if (val !== '' && field.pattern.test(val)) {
+                setSuccess($(this));
+            } else {
+                removeError($(this));
+            }
+        }).on('blur', function() {
             const val = $(this).val().trim();
             if (val === '') {
                 setError($(this), `Enter your ${field.name} is required`);
@@ -58,7 +72,13 @@ $(document).ready(function() {
     });
 
     // --- DATE FIELD ---
-    $('#dob').on('blur change input', function() {
+    $('#dob').on('input', function() {
+        if ($(this).val().trim() !== '') {
+            setSuccess($(this));
+        } else {
+            removeError($(this));
+        }
+    }).on('blur', function() {
         const val = $(this).val().trim();
         if (!val) {
             setError($(this), 'Enter your Date of Birth is required');
@@ -69,11 +89,10 @@ $(document).ready(function() {
 
     // --- TERMS CHECKBOX ---
     $('#terms').on('change', function() {
-        if (!this.checked) {
-            $(this).addClass('error shake').removeClass('success');
-            setTimeout(() => $(this).removeClass('shake'), 200);
+        if (this.checked) {
+            setSuccess($(this));
         } else {
-            $(this).addClass('success').removeClass('error');
+            setError($(this), 'You must accept the terms');
         }
     });
 
@@ -105,10 +124,10 @@ $(document).ready(function() {
     // --- FORM SUBMISSION ---
     $('form').on('submit', function(e) {
         // Trigger validation on all fields
-        letterFields.forEach(f => $(f.id).trigger('input'));
-        numberFields.forEach(f => $(f.id).trigger('input'));
-        selectFields.forEach(f => $(f.id).trigger('change').trigger('blur'));
-        $('#dob').trigger('input').trigger('blur');
+        letterFields.forEach(f => $(f.id).trigger('blur'));
+        numberFields.forEach(f => $(f.id).trigger('blur'));
+        selectFields.forEach(f => $(f.id).trigger('blur'));
+        $('#dob').trigger('blur');
         $('#terms').trigger('change');
 
         if ($('.form-group .error').length > 0 || !$('#terms').is(':checked')) {
